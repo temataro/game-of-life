@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define FRAMES 10
-#define WIDTH 1280
+#define FRAMES 100
+#define WIDTH 1000
 #define HEIGHT WIDTH
 
 size_t it = 0;
@@ -11,7 +11,7 @@ typedef struct rgb {
   unsigned char r, g, b;
 } rgb;
 
-void mapValueToImage(size_t *it, unsigned int *arr);
+int mapValueToImage(size_t *it, unsigned int *arr);
 void populate_neighborhood(unsigned int *arr);
 void peek(unsigned int *arr);
 
@@ -26,13 +26,14 @@ int main(void) {
   return 0;
 }
 
-void mapValueToImage(size_t *it, unsigned int *arr) {
-  char output_file[16];
-  sprintf(output_file, "output_%04zu.ppm", *it);
+int mapValueToImage(size_t *it, unsigned int *arr) {
+  char output_file[25];
+  sprintf(output_file, "./tmp/output_%04zu.ppm", *it);
 
   FILE *fp = fopen(output_file, "wb");
   if (fp == NULL) {
     fprintf(stderr, "[ERROR] File not created.");
+    return 1;
   }
   fprintf(fp, "P6\n%d %d\n255\n", WIDTH, HEIGHT);
 
@@ -41,26 +42,29 @@ void mapValueToImage(size_t *it, unsigned int *arr) {
   rgb pxl;
   for (int i = 0; i < WIDTH; ++i) {
     for (int j = 0; j < WIDTH; ++j) {
-      pxl.r = (i + 12) % 0xff;
-      pxl.g = (i + 32) % 0xff;
-      pxl.b = (i + 62) % 0xff;
+      pxl.r = (i + (*it + 12)) % 0xff;
+      pxl.g = (i + (*it + 32)) % 0xff;
+      pxl.b = (i + (*it + 62)) % 0xff;
       if (arr[i * WIDTH + j]) {
-        pxl.r = (i + 12) % 0xff;
-        pxl.g = (i + 32) % 0xff;
-        pxl.b = (i + 62) % 0xff;
+        pxl.r = (i + (*it + 12)) % 0xff;
+        pxl.g = (i + (*it + 32)) % 0xff;
+        pxl.b = (i + (*it + 62)) % 0xff;
       }
       image[i * WIDTH + j] = pxl;
     }
   }
 
   size_t writtenBytes = fwrite(image, sizeof(rgb), WIDTH * HEIGHT, fp);
-  if (writtenBytes != sizeof(rgb) * WIDTH * HEIGHT) {
+  if (writtenBytes != WIDTH * HEIGHT) {
     fprintf(stderr, "Didn't write enough bytes to file. Only %zu/%d.",
             writtenBytes, WIDTH * HEIGHT);
+    return 1;
   }
 
   free(image);
   fclose(fp);
+  printf("[STATUS] Done making image %08zu/%08d.\r", *it, WIDTH * HEIGHT);
+  return 0;
 }
 
 void populate_neighborhood(unsigned int *arr) {
