@@ -3,11 +3,12 @@ CCFLAGS := -O3 -Wall -Wextra -pedantic -Wno-sign-compare
 FPS     ?= 24
 
 all:
+	clang-format -i conway.c
 	$(CC) $(CCFLAGS) -o conway conway.c 
 	./conway
 
 clean:
-	rm -rf tmp
+	rm -rf tmp conway *.ppm
 
 tmp:
 	# mkdir tmp
