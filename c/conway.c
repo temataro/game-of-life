@@ -21,12 +21,12 @@ typedef struct rgb {
 void iterateLife(unsigned int *arr);
 int mapValueToImage(size_t *it, unsigned int *arr);
 int inBounds(int i, int j, size_t direction);
-void populate_neighborhood(unsigned int *arr);
+void populateNeighborhood(unsigned int *arr);
 void peek(unsigned int *arr);
 
 int main(void) {
   // unsigned int nbhd[N];
-  // populate_neighborhood(nbhd);
+  // populateNeighborhood(nbhd);
 
   // Let's hand-roll a 3x3 glider for this one...
   // 0   0   0   0   0
@@ -90,7 +90,7 @@ int mapValueToImage(size_t *it, unsigned int *arr) {
   return 0;
 }
 
-void populate_neighborhood(unsigned int *arr) {
+void populateNeighborhood(unsigned int *arr) {
   int counter = 0;
   for (int i = 0; i < WIDTH; ++i) {
     for (int j = 0; j < WIDTH; ++j) {
