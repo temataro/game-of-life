@@ -22,6 +22,7 @@ void iterateLife(unsigned int *arr);
 int mapValueToImage(size_t *it, unsigned int *arr);
 int inBounds(int i, int j, size_t direction);
 void populateNeighborhood(unsigned int *arr);
+void insertSlice(size_t from_w, size_t from_h, size_t startSlice, unsigned int *from_arr, unsigned int *to_arr);
 void peek(unsigned int *arr);
 
 int main(void) {
@@ -204,6 +205,30 @@ void iterateLife(unsigned int *arr) {
         arr[i * WIDTH + j] = 0;
         break;
       }
+    }
+  }
+}
+
+void insertSlice(size_t from_w, size_t from_h, size_t sliceStart,
+                 unsigned int *from_arr, unsigned int *to_arr) {
+  // We're going to be putting this slice at position
+  // sliceStart, make sure it fits first.
+  int row = (int)(sliceStart % WIDTH + 1);
+  int col = sliceStart - (row) * WIDTH;
+
+  if ((from_w > WIDTH - col) || (from_h > HEIGHT - row)) {
+    fprintf(stderr, "from_w=%zu from_h=%zu WIDTH=%d HEIGHT=%d row=%d col=%d",
+                    from_w, from_h, WIDTH, HEIGHT, row, col);
+    fprintf(stderr, "[ERROR] Can't put an array with larger size into a slice "
+                    "of a smaller one.");
+  }
+
+  printf("row=%d col=%d\n\n", row, col);
+  size_t idx = 0;
+  for (int i = row; i < row + from_w; ++i) {
+    for (int j = col; j < col + from_h; ++j) {
+      to_arr[i * WIDTH + j] = from_arr[idx];
+      idx++;
     }
   }
 }
