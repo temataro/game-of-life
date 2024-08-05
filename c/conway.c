@@ -185,7 +185,7 @@ void iterateLife(unsigned int *arr) {
         arr[i * WIDTH + j] = 0;
         break;
       case 1:
-        arr[i * WIDTH + j] = 1;
+        arr[i * WIDTH + j] = 0;
         break;
       case 2:
         arr[i * WIDTH + j] = 1;
