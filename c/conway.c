@@ -54,15 +54,31 @@ int mapValueToImage(size_t *it, unsigned int *arr) {
   rgb pxl = {0, 0, 0};
   for (int i = 0; i < WIDTH; ++i) {
     for (int j = 0; j < WIDTH; ++j) {
-      if (arr[i * WIDTH + j]) {
-        pxl.r = 0x00;
-        pxl.g = 0x00;
-        pxl.b = 0x00;
-      }
-      else{
-        pxl.r = 0xff;
-        pxl.g = 0xff;
-        pxl.b = 0xff;
+      switch (arr[i * WIDTH + j]){
+        case 0:
+          // Dead cell, paint grey
+          pxl.r = 0x10;
+          pxl.g = 0x10;
+          pxl.b = 0x10;
+          break;
+        case 1:
+          // Starving cell, paint red
+          pxl.r = 0xcb;
+          pxl.g = 0x1d;
+          pxl.b = 0x04;
+          break;
+        case 2:
+          // Thriving cell, paint green
+          pxl.r = 0xff;
+          pxl.g = 0xff;
+          pxl.b = 0xff;
+          break;
+        case 3:
+          // Overpopulated cell, paint yellow
+          pxl.r = 0xcb;
+          pxl.g = 0xcb;
+          pxl.b = 0x04;
+          break;
       }
       image[i * WIDTH + j] = pxl;
     }
@@ -153,7 +169,6 @@ void iterateLife(unsigned int *arr) {
 
   for (int i = 0; i < WIDTH; ++i) {
     for (int j = 0; j < WIDTH; ++j) {
-      size_t neighbors = 0;
       // I can't find a better way to enumerate these directions
       // Explore every direction first, then if explored direction's coordinates
       // are in array && alive, increment neighbors counter.
@@ -168,6 +183,8 @@ void iterateLife(unsigned int *arr) {
       TOP_L = i * (WIDTH - 1) + (j - 1);
 
       size_t directions[8] = {UP, TOP_R, RIGHT, DWN_R, DWN, DWN_L, LEFT, TOP_L};
+
+      size_t neighbors = 0;
       for (int d = 0; d < 9; d++) {
         int direction = directions[d];
         if (inBounds(i, j, d)) {
@@ -180,22 +197,22 @@ void iterateLife(unsigned int *arr) {
       // TODO: Instead of making the values 0 or 1, how about actually putting
       // the number of neighbors so we can later use it to show which ones are
       // starving, happy, or overpopulated in their current position.
-      switch (neighbors) {
-      case 0:
-        arr[i * WIDTH + j] = 0;
-        break;
-      case 1:
-        arr[i * WIDTH + j] = 0;
-        break;
-      case 2:
-        arr[i * WIDTH + j] = 1;
-        break;
-      case 3:
-        arr[i * WIDTH + j] = 0;
-        break;
-      }
+     switch (neighbors) {
+     case 0:
+       arr[i * WIDTH + j] = 0;
+       break;
+     case 1:
+       arr[i * WIDTH + j] = 0;
+       break;
+     case 2:
+       arr[i * WIDTH + j] = 2;
+       break;
+     case 3:
+    arr[i * WIDTH + j] = 0;
+    break;
     }
   }
+}
 }
 
 void insertSlice(size_t from_w, size_t from_h, size_t sliceStart,
