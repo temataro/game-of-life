@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define FRAMES 100
-#define WIDTH 5
+#define FRAMES 256
+#define WIDTH 128
 #define HEIGHT WIDTH
 #define N (WIDTH * HEIGHT)
 // TODO:  - CLI arguments for frames, fps, and picture size
