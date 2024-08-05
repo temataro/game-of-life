@@ -55,14 +55,14 @@ int mapValueToImage(size_t *it, unsigned int *arr) {
   for (int i = 0; i < WIDTH; ++i) {
     for (int j = 0; j < WIDTH; ++j) {
       if (arr[i * WIDTH + j]) {
-        pxl.r = 0xff;
-        pxl.g = 0xff;
-        pxl.b = 0xff;
-      }
-      else{
         pxl.r = 0x00;
         pxl.g = 0x00;
         pxl.b = 0x00;
+      }
+      else{
+        pxl.r = 0xff;
+        pxl.g = 0xff;
+        pxl.b = 0xff;
       }
       image[i * WIDTH + j] = pxl;
     }
