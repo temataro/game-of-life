@@ -28,8 +28,8 @@ void peek(unsigned int *arr);
 int main(void) {
   unsigned int nbhd[N] = {0};
   populateNeighborhood(nbhd);
-  peek(nbhd);
-
+  // peek(nbhd);
+  mapValueToImage(&it, nbhd);
   while (it < FRAMES) {
     mapValueToImage(&it, nbhd);
     iterateLife(nbhd);
@@ -98,10 +98,10 @@ int mapValueToImage(size_t *it, unsigned int *arr) {
 }
 
 void populateNeighborhood(unsigned int *arr) {
-  unsigned int glider_5x6[30] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-                          1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0};
-  unsigned int glider_5x5[25] = {0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
-                          0, 0, 0, 0, 0, 0, 0};
+  // unsigned int glider_5x6[30] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
+  //                         1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0};
+  // unsigned int glider_5x5[25] = {0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
+  //                         0, 0, 0, 0, 0, 0, 0};
   // Let's hand-roll a 5x5 glider for this one...
   // 0   0   0   0   0
   // 0   1   1   0   0
@@ -109,8 +109,12 @@ void populateNeighborhood(unsigned int *arr) {
   // 0   1   1   0   0
   // 0   0   0   0   0
 
+  unsigned int bomb_seed[25] = {1, 0, 0, 0, 1 , 0, 0, 1, 0, 0 , 0, 1, 1, 1, 0 , 0, 0, 1, 0, 0 , 1, 0, 0, 0, 1};
+
   // insertSlice(5, 6, WIDTH * 25 + HEIGHT - 100, glider_5x6, arr);
-  insertSlice(5, 6, WIDTH * 25 + HEIGHT - 100, glider_5x5, arr);
+  // insertSlice(5, 6, 0, glider_5x5, arr);
+  // insertSlice(5, 6, WIDTH * 5 + ((int) 0.25 * HEIGHT), glider_5x5, arr);
+  insertSlice(5, 6, (int) WIDTH * WIDTH * 0.35 + ((int) 0.5 * HEIGHT), bomb_seed, arr);
 }
 
 void peek(unsigned int *arr) {
