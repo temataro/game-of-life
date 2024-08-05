@@ -25,7 +25,8 @@ void populate_neighborhood(unsigned int *arr);
 void peek(unsigned int *arr);
 
 int main(void) {
-  unsigned int nbhd[N];
+  // unsigned int nbhd[N];
+  // populate_neighborhood(nbhd);
 
   // Let's hand-roll a 3x3 glider for this one...
   // 0   0   0   0   0
@@ -34,9 +35,9 @@ int main(void) {
   // 0   1   1   0   0
   // 0   0   0   0   0
 
-  // unsigned int nbhd[N] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-  //                         1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0};
-  populate_neighborhood(nbhd);
+  unsigned int nbhd[N] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+                          1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0};
+  peek(nbhd);
 
   while (it < FRAMES) {
     mapValueToImage(&it, nbhd);
@@ -67,6 +68,11 @@ int mapValueToImage(size_t *it, unsigned int *arr) {
         pxl.g = 0xff;
         pxl.b = 0xff;
       }
+      else{
+        pxl.r = 0x00;
+        pxl.g = 0x00;
+        pxl.b = 0x00;
+      }
       image[i * WIDTH + j] = pxl;
     }
   }
@@ -85,13 +91,18 @@ int mapValueToImage(size_t *it, unsigned int *arr) {
 }
 
 void populate_neighborhood(unsigned int *arr) {
+  int counter = 0;
   for (int i = 0; i < WIDTH; ++i) {
     for (int j = 0; j < WIDTH; ++j) {
-      if ((i * WIDTH + j) % 2 == 0) {
+      if (counter % 2){
         arr[i * WIDTH + j] = 1;
-      } else {
-        arr[i * WIDTH + j] = 0;
       }
+      counter++;
+      // if ((i * WIDTH + j) % 2 == 0) {
+      //   arr[i * WIDTH + j] = 1;
+      // } else {
+      //   arr[i * WIDTH + j] = 0;
+      // }
     }
   }
 }
